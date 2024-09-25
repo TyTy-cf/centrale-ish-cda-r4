@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
+@AllArgsConstructor
 public class FavoriteService implements BasicServiceInterface<Favorite, Long, FavoriteDTO> {
 
     private FavoriteRepository favoriteRepository;
@@ -26,7 +26,6 @@ public class FavoriteService implements BasicServiceInterface<Favorite, Long, Fa
 
     @Override
     public Favorite create(FavoriteDTO o) {
-        System.out.println(o);
         User user = userService.findOneById(o.getUserId());
         // TODO : appeler le ListingService ici pour être sûr !
         Listing listing = listingRepository.findById(o.getListingId()).get();
