@@ -23,7 +23,9 @@ Listing@show
 - images
     - path
 - owner
+    - uuid
     - email
+    - isActive
 - fuel
     - type
 - model

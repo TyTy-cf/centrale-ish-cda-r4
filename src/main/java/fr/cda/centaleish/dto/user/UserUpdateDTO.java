@@ -1,6 +1,5 @@
 package fr.cda.centaleish.dto.user;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -20,12 +19,16 @@ public class UserUpdateDTO {
     private LocalDate birthAt;
 
     @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @NotBlank
     private String phone;
 
-    @NotBlank
     private String siret;
 
-    @NotBlank
     private String photo;
 
 }

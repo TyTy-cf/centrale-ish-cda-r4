@@ -2,7 +2,6 @@ package fr.cda.centaleish.configuration;
 
 import fr.cda.centaleish.entity.*;
 import fr.cda.centaleish.repository.*;
-import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -52,13 +51,13 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        createFuels();
-//        createUsers();
-//        createAddresses();
-//        createBrands();
-//        createModels();
-//        createListings();
-//        createImages();
+        createFuels();
+        createUsers();
+        createAddresses();
+        createBrands();
+        createModels();
+        createListings();
+        createImages();
         createFavorites();
     }
 
@@ -90,17 +89,15 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     }
 
     private void createUsers() {
-        List<String> duplicates = new ArrayList<>();
         if (userRepository.count() != 500) {
             for (long i = 1L; i <= 500L; i++) {
                 User user = new User();
                 user.setCreatedAt(LocalDateTime.now());
-                String email;
-                do {
-                    email = faker.internet().emailAddress();
-                } while (duplicates.contains(email));
-                duplicates.add(email);
-                user.setEmail(email);
+                user.setFirstName(faker.name().firstName());
+                user.setLastName(faker.name().lastName());
+                user.setEmail(faker.internet().emailAddress(
+                    user.getFirstName() + "." + user.getLastName()
+                ).toLowerCase());
                 user.setPhone(faker.phoneNumber().cellPhone());
                 user.setBirthAt(generateRandomDate(
                         Instant.now().minusSeconds(999999999)
@@ -134,13 +131,14 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
     private void createModels() {
         List<String> duplicates = new ArrayList<>();
-        if (modelRepository.count() < 200) {
-            for (int i = 0; i <= 200; i++) {
+        if (modelRepository.count() == 0) {
+            for (int i = 0; i <= 160; i++) {
                 Model model = new Model();
                 Random random = new Random();
-                Brand brand = brandRepository.findById(random.nextLong(1L, 29L)).get();
+                Brand brand;
                 String name;
                 do {
+                    brand = brandRepository.findById(random.nextLong(1L, 29L)).get();
                     name = faker.vehicle().model(brand.getName());
                 } while (duplicates.contains(name));
                 duplicates.add(name);

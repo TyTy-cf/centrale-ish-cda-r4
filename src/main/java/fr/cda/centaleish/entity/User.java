@@ -1,5 +1,7 @@
 package fr.cda.centaleish.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import fr.cda.centaleish.json_views.JsonViews;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -18,29 +20,38 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonView(JsonViews.UserMinimalView.class)
     private String uuid;
 
     @Column(nullable = false)
+    @JsonView(JsonViews.UserMinimalView.class)
     private String email;
 
-    @Column(nullable = false)
+    @JsonView(JsonViews.UserShowView.class)
+    private String firstName;
+
+    @JsonView(JsonViews.UserShowView.class)
+    private String lastName;
+
+    @JsonView(JsonViews.UserShowView.class)
     private String phone;
 
-    @Column
+    @JsonView(JsonViews.UserShowView.class)
     private String siret;
 
     @Column(nullable = false)
     private String password;
 
+    @JsonView(JsonViews.UserShowView.class)
     private String photo;
 
-    @Column
     private String activationCode;
 
-    @Column(nullable = false)
+    @JsonView(JsonViews.UserShowView.class)
     private LocalDate birthAt;
 
     @Column(nullable = false)
+    @JsonView(JsonViews.UserShowView.class)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
@@ -55,7 +66,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Favorite> favorites = new ArrayList<>();
 
-    private Boolean isActive() {
+    @JsonView(JsonViews.UserMinimalView.class)
+    private Boolean getIsActive() {
         return activationCode == null;
     }
 

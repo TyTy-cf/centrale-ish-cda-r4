@@ -18,6 +18,15 @@ public class UserCreateDTO {
     @Email
     private String email;
 
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @NotBlank
+    private String phone;
+
     @NotNull
     @Past
     private LocalDate birthAt;

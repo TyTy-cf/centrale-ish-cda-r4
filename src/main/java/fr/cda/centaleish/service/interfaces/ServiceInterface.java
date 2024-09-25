@@ -6,7 +6,7 @@ public interface ServiceInterface<T, L, C, U> {
 
     T update(U o, L id);
 
-    void delete(L id);
+    Boolean delete(L id);
 
     T findOneById(L id);
 
