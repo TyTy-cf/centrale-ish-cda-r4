@@ -2,8 +2,11 @@ Propriétés à récupérer pour les entités :
 
 
 Listing@delete
+
 Listing@update
+
 Listing@create
+
 Listing@list
 - uuid
 - title
@@ -12,6 +15,7 @@ Listing@list
 - producedAt
 - images
     - path
+
 Listing@show
 - uuid
 - title
@@ -42,16 +46,19 @@ Listing@show
 
 
 User@delete
+
 User@update (NE PAS INCLURE LES PROPRIETES ROLE ET ACTIVATION CODE !)
 - birthAt
 - phone
 - siret
 - photo
+
 User@create (NE PAS INCLURE LES PROPRIETES ROLE ET ACTIVATION CODE !)
 - email
 - birthAt
 - password
 - confirmedPassword
+
 User@show
 - uuid
 - email
@@ -79,14 +86,18 @@ User@show
 
 
 Model@delete
+
 Model@create
+
 Model@update
+
 Model@list
 - id
 - name
 - brand
   - name
-  Model@show :
+
+Model@show :
 - id
 - name
 - brand
@@ -94,12 +105,16 @@ Model@list
 
 
 Brand@delete
+
 Brand@create
+
 Brand@update
+
 Brand@list
 - id
 - name
 - Ajouter une méthode "modelCount" elle renvoie le nombre de Model pour la Brand
+
 Brand@show
 - id
 - name
@@ -109,8 +124,11 @@ Brand@show
 
 
 Address@delete
+
 Address@create
+
 Address@update
+
 Address@show
 - id
 - streetNumber
@@ -122,16 +140,21 @@ Address@show
 
 
 Image@delete
+
 Image@create
 
 
 Fuel@delete
+
 Fuel@create
+
 Fuel@update
+
 Fuel@list
 - id
 - name
 - logo
+
 Fuel@show
 - id
 - name
@@ -139,6 +162,7 @@ Fuel@show
 
 
 Favorite@delete
+
 Favorite@create
 
 
