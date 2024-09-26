@@ -6,8 +6,11 @@ import fr.cda.centaleish.dto.user.UserUpdateDTO;
 import fr.cda.centaleish.entity.User;
 import fr.cda.centaleish.json_views.JsonViews;
 import fr.cda.centaleish.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,19 +21,19 @@ public class UserRestController {
 
     @PostMapping
     @JsonView(JsonViews.UserShowView.class)
-    public User create(@RequestBody UserCreateDTO dto) {
+    public User create(@Valid @RequestBody UserCreateDTO dto) {
         return userService.create(dto);
     }
 
     @PutMapping("/{uuid}")
     @JsonView(JsonViews.UserShowView.class)
-    public User update(@RequestBody UserUpdateDTO dto, @PathVariable String uuid) {
+    public User update(@Valid @RequestBody UserUpdateDTO dto, @PathVariable String uuid) {
         return userService.update(dto, uuid);
     }
 
     @GetMapping("/activate/{code}")
     @JsonView(JsonViews.UserShowView.class)
-    public User activate(@PathVariable String code) {
+    public User activate(@PathVariable String code) throws TimeoutException {
         return userService.activate(code);
     }
 

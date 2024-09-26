@@ -38,7 +38,12 @@ public class FavoriteService implements BasicServiceInterface<Favorite, Long, Fa
 
     @Override
     public Boolean delete(Long id) {
-        return null;
+        try {
+            favoriteRepository.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
 }

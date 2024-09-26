@@ -47,6 +47,8 @@ public class User {
 
     private String activationCode;
 
+    private LocalDateTime activationCodeSentAt;
+
     @JsonView(JsonViews.UserShowView.class)
     private LocalDate birthAt;
 
@@ -64,11 +66,17 @@ public class User {
     private List<Listing> listings = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonView(JsonViews.UserShowView.class)
     private List<Favorite> favorites = new ArrayList<>();
 
     @JsonView(JsonViews.UserMinimalView.class)
     private Boolean getIsActive() {
         return activationCode == null;
+    }
+
+    @JsonView(JsonViews.UserMinimalView.class)
+    private Boolean getIsAdmin() {
+        return roles.contains("ROLE_ADMIN");
     }
 
 }

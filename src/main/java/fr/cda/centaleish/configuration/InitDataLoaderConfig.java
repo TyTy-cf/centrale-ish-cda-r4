@@ -196,7 +196,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 listing.setTitle("Vente de " +
                         listing.getModel().getBrand().getName() +
                         " " + listing.getModel().getName() +
-                        " à " + listing.getPrice());
+                        " à " + (listing.getPrice() / 100) + "€");
 
                 listingRepository.save(listing);
             }

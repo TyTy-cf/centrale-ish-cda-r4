@@ -9,6 +9,7 @@ import fr.cda.centaleish.entity.User;
 import fr.cda.centaleish.json_views.JsonViews;
 import fr.cda.centaleish.service.FavoriteService;
 import fr.cda.centaleish.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,13 @@ public class FavoriteRestController {
 
     @PostMapping
     @JsonView(JsonViews.FavoriteView.class)
-    public Favorite create(@RequestBody FavoriteDTO dto) {
+    public Favorite create(@Valid @RequestBody FavoriteDTO dto) {
         return favoriteService.create(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable Long id) {
+        return favoriteService.delete(id);
     }
 
 }
