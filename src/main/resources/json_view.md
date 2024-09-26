@@ -140,3 +140,13 @@ Fuel@show
 
 Favorite@delete
 Favorite@create
+
+
+## Faire le(s) "Controller Advisor"
+
+
+- Un controller advice pour gérer la "AlreadyActiveException"
+- Un controller advice pour gérer la "ExpiredCodeException"
+
+
+Renvoyer une réponse personnalisée, contenant un code d'erreur "503" et le message remonté de l'Exception 

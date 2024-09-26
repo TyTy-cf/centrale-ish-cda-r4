@@ -33,7 +33,7 @@ public class UserRestController {
 
     @GetMapping("/activate/{code}")
     @JsonView(JsonViews.UserShowView.class)
-    public User activate(@PathVariable String code) throws TimeoutException {
+    public User activate(@PathVariable String code) {
         return userService.activate(code);
     }
 

@@ -5,6 +5,7 @@ import fr.cda.centaleish.dto.user.UserUpdateDTO;
 import fr.cda.centaleish.entity.Address;
 import fr.cda.centaleish.entity.User;
 import fr.cda.centaleish.exception.AlreadyActiveException;
+import fr.cda.centaleish.exception.ExpiredCodeException;
 import fr.cda.centaleish.repository.AddressRepository;
 import fr.cda.centaleish.repository.UserRepository;
 import fr.cda.centaleish.service.interfaces.ServiceInterface;
@@ -83,13 +84,13 @@ public class UserService implements
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public User activate(String code) throws TimeoutException {
+    public User activate(String code) {
         User user = userRepository.findUserByActivationCode(code)
-                .orElseThrow(AlreadyActiveException::new);
+                .orElseThrow(() -> new AlreadyActiveException("Ce code d'activation n'existe pas !"));
 
         LocalDateTime current = LocalDateTime.now();
         if (current.isAfter(user.getActivationCodeSentAt().plusMinutes(15))) {
-            throw new TimeoutException("La durée du code a expiré");
+            throw new ExpiredCodeException("La durée du code a expiré");
         }
         user.setActivationCode(null);
         user.setActivationCodeSentAt(null);

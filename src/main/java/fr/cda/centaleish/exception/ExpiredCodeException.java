@@ -3,9 +3,9 @@ package fr.cda.centaleish.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class AlreadyActiveException extends RuntimeException {
+public class ExpiredCodeException extends RuntimeException {
 
-    public AlreadyActiveException(String message) {
+    public ExpiredCodeException(String message) {
         super(message);
     }
 
