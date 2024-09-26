@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.concurrent.TimeoutException;
 
 @Service
 @AllArgsConstructor
@@ -38,8 +37,8 @@ public class UserService implements
         user.setFirstName(o.getFirstName());
         user.setLastName(o.getLastName());
         user.setBirthAt(o.getBirthAt());
+        user.setActivationCodeSentAt(LocalDateTime.now());
         // Send mail ? mailerService.sendActivationCode(user);
-        // user.setActivationCodeSentAt(LocalDateTime.now());
         return userRepository.saveAndFlush(user);
     }
 
