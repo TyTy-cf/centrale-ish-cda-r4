@@ -4,6 +4,7 @@ import fr.cda.centaleish.dto.listing.ListingCreateDTO;
 import fr.cda.centaleish.dto.listing.ListingUpdateDTO;
 import fr.cda.centaleish.entity.*;
 import fr.cda.centaleish.repository.FuelRepository;
+import fr.cda.centaleish.repository.ImageRepository;
 import fr.cda.centaleish.repository.ListingRepository;
 import fr.cda.centaleish.repository.ModelRepository;
 import fr.cda.centaleish.service.interfaces.ServiceListInterface;
@@ -25,6 +26,7 @@ public class ListingService implements
     private FuelRepository fuelRepository;
     private AddressService addressService;
     private UserService userService;
+    private ImageRepository imageRepository;
 
     public Listing create(ListingCreateDTO dto, Principal principal) {
         Listing listing = create(dto);
@@ -74,6 +76,7 @@ public class ListingService implements
             listing.setProducedAt(LocalDateTime.now());
             listing.setMileage(0L);
             listing.setPrice(0L);
+            imageRepository.deleteAll(listing.getImages());
             return true;
         } catch (EntityNotFoundException e) {
             return false;
