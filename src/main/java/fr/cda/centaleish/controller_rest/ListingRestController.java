@@ -27,8 +27,6 @@ public class ListingRestController {
     @PostMapping
     @JsonView(JsonViews.ListingShowView.class)
     public Listing create(@RequestBody ListingCreateDTO dto, Principal principal) {
-        System.out.println(dto);
-        System.out.println(principal.getName());
         return listingService.create(dto, principal);
     }
 
