@@ -81,8 +81,22 @@ public class ListingService implements
     }
 
     @Override
-    public Listing update(ListingUpdateDTO o, String id) {
-        return null;
+    public Listing update(ListingUpdateDTO dto, String id) {
+        Listing listing = findOneById(id);
+        listing.setPrice(dto.getPrice());
+        listing.setMileage(dto.getMileage());
+        listing.setDescription(dto.getDescription());
+        listing.setProducedAt(dto.getProducedAt());
+
+        Address address;
+        Long addressId = dto.getAddress().getId();
+        if (addressId != null) { // Address already exists
+            address = addressService.findOneById(addressId);
+        } else {
+            address = addressService.create(dto.getAddress());
+        }
+        listing.setAddress(address);
+        return listingRepository.saveAndFlush(listing);
     }
 
     @Override
