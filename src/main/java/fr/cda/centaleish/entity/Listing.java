@@ -60,7 +60,18 @@ public class Listing {
     private Address address;
 
     @OneToMany(mappedBy = "listing")
-    @JsonView(JsonViews.ListingListView.class)
     private List<Image> images = new ArrayList<>();
+
+    public void initTitle() {
+        title = "Vente de " +
+                getModel().getBrand().getName() +
+                " " + getModel().getName() +
+                " à " + getPriceDecimal();
+    }
+
+    @JsonView(JsonViews.ListingListView.class)
+    public String getPriceDecimal() {
+        return (this.price / 100.0d) + "€";
+    }
 
 }

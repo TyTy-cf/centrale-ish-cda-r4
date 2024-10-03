@@ -202,10 +202,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 User user = users.get(random.nextInt(1, 500));;
                 listing.setOwner(user);
 
-                listing.setTitle("Vente de " +
-                        listing.getModel().getBrand().getName() +
-                        " " + listing.getModel().getName() +
-                        " à " + (listing.getPrice() / 100) + "€");
+                listing.initTitle();
 
                 listingRepository.save(listing);
             }

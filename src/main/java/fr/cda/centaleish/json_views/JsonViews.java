@@ -13,5 +13,6 @@ public class JsonViews {
     public interface ListingMinimalView {}
 
     public interface ListingListView extends ListingMinimalView {}
+    public interface ListingShowView extends ListingListView {}
 
 }

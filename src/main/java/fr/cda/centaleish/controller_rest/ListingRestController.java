@@ -1,14 +1,14 @@
 package fr.cda.centaleish.controller_rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.cda.centaleish.dto.listing.ListingCreateDTO;
 import fr.cda.centaleish.entity.Listing;
 import fr.cda.centaleish.json_views.JsonViews;
 import fr.cda.centaleish.service.ListingService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,6 +22,14 @@ public class ListingRestController {
     @JsonView(JsonViews.ListingListView.class)
     public List<Listing> list() {
         return listingService.list();
+    }
+
+    @PostMapping
+    @JsonView(JsonViews.ListingShowView.class)
+    public Listing create(@RequestBody ListingCreateDTO dto, Principal principal) {
+        System.out.println(dto);
+        System.out.println(principal.getName());
+        return listingService.create(dto, principal);
     }
 
 }

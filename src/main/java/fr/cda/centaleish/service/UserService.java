@@ -92,6 +92,11 @@ public class UserService implements
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public User findOneByEmail(String email) {
+        return userRepository.findUserByEmailAndActivationCodeIsNull(email)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
     public User activate(String code) {
         User user = userRepository.findUserByActivationCode(code)
                 .orElseThrow(() -> new AlreadyActiveException("Ce code d'activation n'existe pas !"));
