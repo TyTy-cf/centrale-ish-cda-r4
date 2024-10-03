@@ -1,6 +1,8 @@
 
 package fr.cda.centaleish.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import fr.cda.centaleish.json_views.JsonViews;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +19,11 @@ public class Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.ModelMinimalView.class)
     private Long id;
 
     @Column(nullable = false)
+    @JsonView(JsonViews.ModelMinimalView.class)
     private String name;
 
     @ManyToOne
@@ -27,5 +31,10 @@ public class Model {
 
     @OneToMany(mappedBy = "model")
     private List<Listing> listings = new ArrayList<>();
+
+    @JsonView(JsonViews.ModelMinimalView.class)
+    private Integer listingCount() {
+        return listings.size();
+    }
 
 }

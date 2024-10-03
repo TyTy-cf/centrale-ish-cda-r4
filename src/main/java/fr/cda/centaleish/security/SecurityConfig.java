@@ -48,7 +48,7 @@ public class SecurityConfig {
                     ).authenticated()
                     .requestMatchers(
                         AntPathRequestMatcher.antMatcher("/api/admin/**")
-                    ).hasAuthority("ADMIN")
+                    ).hasAuthority("ROLE_ADMIN")
             );
         return http.build();
     }
