@@ -67,7 +67,17 @@ public class ListingService implements
 
     @Override
     public Boolean delete(String id) {
-        return null;
+        try {
+            Listing listing = findOneById(id);
+            listing.setTitle("Annonce supprimée");
+            listing.setDescription("Annonce supprimée");
+            listing.setProducedAt(LocalDateTime.now());
+            listing.setMileage(0L);
+            listing.setPrice(0L);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
