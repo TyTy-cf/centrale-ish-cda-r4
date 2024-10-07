@@ -27,7 +27,10 @@ public class FavoriteRestControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 post("/api/favorite")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(getJsonByData("00212ab2-044f-497e-bbae-8d927d5479ba", "0166a54b-5700-47cc-8b90-735413605863")));
+                        .content(getJsonByData(
+                                "005e38fb-5403-47bc-9989-9a289fdb1185",
+                                "010bff98-50e5-4b6a-a3c1-8c167c0acc7b"
+                        )));
 
         resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.createdAt").exists())
