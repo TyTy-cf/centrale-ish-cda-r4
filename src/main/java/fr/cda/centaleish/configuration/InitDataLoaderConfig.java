@@ -93,15 +93,19 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     }
 
     private void createUsers() {
+        List<String> existingEmail = new ArrayList<>();
         if (userRepository.count() != 500) {
             for (long i = 1L; i <= 500L; i++) {
                 User user = new User();
                 user.setCreatedAt(LocalDateTime.now());
-                user.setFirstName(faker.name().firstName());
-                user.setLastName(faker.name().lastName());
-                user.setEmail(faker.internet().emailAddress(
-                    user.getFirstName() + "." + user.getLastName()
-                ).toLowerCase());
+                String email;
+                do {
+                    user.setFirstName(faker.name().firstName());
+                    user.setLastName(faker.name().lastName());
+                    email = user.getFirstName() + "." + user.getLastName();
+                } while (existingEmail.contains(email));
+                existingEmail.add(user.getFirstName() + "." + user.getLastName());
+                user.setEmail(faker.internet().emailAddress(email.toLowerCase()));
                 user.setPhone(faker.phoneNumber().cellPhone());
                 user.setBirthAt(generateRandomDate(
                         Instant.now().minusSeconds(999999999)
