@@ -29,7 +29,7 @@ public class SecurityRestController {
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody UserLoginDTO user) {
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody UserLoginDTO user) {
         return jwtAuthenticatorService.authenticate(user);
     }
 

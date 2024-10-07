@@ -11,6 +11,6 @@ public class CustomResponse {
 
     private int status;
 
-    private String message;
+    private Object message;
 
 }
