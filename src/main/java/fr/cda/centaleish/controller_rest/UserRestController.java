@@ -1,7 +1,6 @@
 package fr.cda.centaleish.controller_rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import fr.cda.centaleish.dto.user.UserCreateDTO;
 import fr.cda.centaleish.dto.user.UserUpdateDTO;
 import fr.cda.centaleish.entity.User;
 import fr.cda.centaleish.json_views.JsonViews;
@@ -10,20 +9,12 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.TimeoutException;
-
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
 public class UserRestController {
 
     private UserService userService;
-
-    @PostMapping
-    @JsonView(JsonViews.UserShowView.class)
-    public User create(@Valid @RequestBody UserCreateDTO dto) {
-        return userService.create(dto);
-    }
 
     @PutMapping("/{uuid}")
     @JsonView(JsonViews.UserShowView.class)

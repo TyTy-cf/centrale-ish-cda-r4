@@ -20,22 +20,22 @@ public class Listing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @JsonView(JsonViews.UserShowView.class)
+    @JsonView(JsonViews.ListingMinimalView.class)
     private String uuid;
 
     @Column(nullable = false)
-    @JsonView(JsonViews.UserShowView.class)
+    @JsonView(JsonViews.ListingMinimalView.class)
     private String title;
 
     @Column(nullable = false)
-    @JsonView(JsonViews.UserShowView.class)
+    @JsonView(JsonViews.ListingMinimalView.class)
     private Long price;
 
     @Column(nullable = false)
-    @JsonView(JsonViews.UserShowView.class)
+    @JsonView(JsonViews.ListingMinimalView.class)
     private Long mileage;
 
-    @JsonView(JsonViews.UserShowView.class)
+    @JsonView(JsonViews.ListingMinimalView.class)
     private LocalDateTime producedAt;
 
     private LocalDateTime createdAt;
@@ -61,5 +61,17 @@ public class Listing {
 
     @OneToMany(mappedBy = "listing")
     private List<Image> images = new ArrayList<>();
+
+    public void initTitle() {
+        title = "Vente de " +
+                getModel().getBrand().getName() +
+                " " + getModel().getName() +
+                " à " + getPriceDecimal();
+    }
+
+    @JsonView(JsonViews.ListingListView.class)
+    public String getPriceDecimal() {
+        return (this.price / 100.0d) + "€";
+    }
 
 }

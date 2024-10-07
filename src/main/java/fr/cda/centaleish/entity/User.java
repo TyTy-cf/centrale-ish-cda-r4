@@ -6,17 +6,22 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import org.json.JSONArray;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Data
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -79,4 +84,18 @@ public class User {
         return roles.contains("ROLE_ADMIN");
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        JSONArray roles = new JSONArray(this.roles);
+        roles.forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.toString()));
+        });
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

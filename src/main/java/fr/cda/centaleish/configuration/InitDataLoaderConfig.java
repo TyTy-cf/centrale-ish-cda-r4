@@ -5,6 +5,7 @@ import fr.cda.centaleish.repository.*;
 import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -23,6 +24,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     private final ImageRepository imageRepository;
     private final ListingRepository listingRepository;
     private final FavoriteRepository favoriteRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     private final Faker faker;
 
@@ -35,7 +37,8 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         AddressRepository addressRepository,
         ImageRepository imageRepository,
         ListingRepository listingRepository,
-        FavoriteRepository favoriteRepository
+        FavoriteRepository favoriteRepository,
+        BCryptPasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.brandRepository = brandRepository;
@@ -45,6 +48,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         this.imageRepository = imageRepository;
         this.listingRepository = listingRepository;
         this.favoriteRepository = favoriteRepository;
+        this.passwordEncoder = passwordEncoder;
         this.faker = new Faker(Locale.of("fr"));
     }
 
@@ -103,9 +107,14 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                         Instant.now().minusSeconds(999999999)
                                 .minusSeconds(999999999)
                                 .minusSeconds(999999999)).toLocalDate());
-                user.setPassword(faker.internet().password(8, 12, true, true));
+                user.setPassword(passwordEncoder.encode("12345"));
                 user.setSiret(faker.number().digits(14));
-                user.setRoles("[\"ROLE_USER\"]");
+                String roles = "[\"ROLE_USER\"";
+                if (i == 1L) {
+                    roles += ", \"ROLE_ADMIN\"";
+                }
+                roles += "]";
+                user.setRoles(roles);
                 userRepository.save(user);
             }
             userRepository.flush();
@@ -193,10 +202,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 User user = users.get(random.nextInt(1, 500));;
                 listing.setOwner(user);
 
-                listing.setTitle("Vente de " +
-                        listing.getModel().getBrand().getName() +
-                        " " + listing.getModel().getName() +
-                        " à " + (listing.getPrice() / 100) + "€");
+                listing.initTitle();
 
                 listingRepository.save(listing);
             }

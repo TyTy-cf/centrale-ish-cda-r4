@@ -11,19 +11,28 @@ import fr.cda.centaleish.repository.UserRepository;
 import fr.cda.centaleish.service.interfaces.ServiceInterface;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class UserService implements
-        ServiceInterface<User, String, UserCreateDTO, UserUpdateDTO> {
+        ServiceInterface<User, String, UserCreateDTO, UserUpdateDTO>,
+        UserDetailsService {
 
     private UserRepository userRepository;
 
     private AddressRepository addressRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User create(UserCreateDTO o) {
@@ -32,7 +41,7 @@ public class UserService implements
         user.setCreatedAt(LocalDateTime.now());
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPhone(o.getPhone());
-        user.setPassword(o.getPassword());
+        user.setPassword(passwordEncoder.encode(o.getPassword()));
         user.setEmail(o.getEmail());
         user.setFirstName(o.getFirstName());
         user.setLastName(o.getLastName());
@@ -83,6 +92,11 @@ public class UserService implements
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public User findOneByEmail(String email) {
+        return userRepository.findUserByEmailAndActivationCodeIsNull(email)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
     public User activate(String code) {
         User user = userRepository.findUserByActivationCode(code)
                 .orElseThrow(() -> new AlreadyActiveException("Ce code d'activation n'existe pas !"));
@@ -95,4 +109,17 @@ public class UserService implements
         user.setActivationCodeSentAt(null);
         return userRepository.saveAndFlush(user);
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findUserByEmailAndActivationCodeIsNull(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Echec de la connexion"));
+
+        return new org.springframework.security.core.userdetails.User(
+            user.getEmail(),
+            user.getPassword(),
+            user.getAuthorities()
+        );
+    }
+
 }

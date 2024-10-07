@@ -1,13 +1,51 @@
 Propriétés à récupérer pour les entités :
 
 
-Listing@delete
+### SecurityController
 
-Listing@update
 
-Listing@create
+@login
 
-Listing@list
+-> Param : UserLoginDTO :
+- email
+- password
+
+@register
+
+-> UserRegisterDTO :
+- email
+- birthAt
+- password
+- confirmedPassword
+
+
+(Prévoir le JsonView de sortie)
+
+
+### ListingController
+
+@delete
+
+@update
+ListingUpdateDTO :
+- description
+- mileage
+- price
+- title
+
+@create
+ListingCreateDTO :
+- description
+- mileage
+- price
+- title
+- producedAt
+- address
+- fuel
+- model
+- user (connecté ?)
+
+@list (Attributs du JsonView)
 - uuid
 - title
 - price
@@ -16,7 +54,7 @@ Listing@list
 - images
     - path
 
-Listing@show
+@show (Attributs du JsonView)
 - uuid
 - title
 - price
@@ -45,21 +83,19 @@ Listing@show
     - longitude
 
 
-User@delete
+### UserController
 
-User@update (NE PAS INCLURE LES PROPRIETES ROLE ET ACTIVATION CODE !)
+@delete
+
+Ce n'est pas une vraie suppression, on renomme simplements les champs du user, on doit le conserver !
+
+@update (NE PAS INCLURE LES PROPRIETES ROLE ET ACTIVATION CODE !)
 - birthAt
 - phone
 - siret
 - photo
 
-User@create (NE PAS INCLURE LES PROPRIETES ROLE ET ACTIVATION CODE !)
-- email
-- birthAt
-- password
-- confirmedPassword
-
-User@show
+@show
 - uuid
 - email
 - phone
@@ -85,37 +121,53 @@ User@show
         - path
 
 
-Model@delete
+### ModelController
 
-Model@create
 
-Model@update
+@delete
 
-Model@list
+Ce n'est pas une vraie suppression, on renomme simplements le label, on doit conserver l'objet !
+
+@create
+- name
+- brand (id ?)
+
+@update
+- name
+
+@list  (Attributs du JsonView)
 - id
 - name
 - brand
   - name
 
-Model@show :
+@show  (Attributs du JsonView)
 - id
 - name
 - brand
     - name
 
 
-Brand@delete
+### BrandController
 
-Brand@create
 
-Brand@update
+@delete
 
-Brand@list
+Ce n'est pas une vraie suppression, on renomme simplements le label, on doit conserver l'objet !
+
+
+@create
+- name
+
+@update
+- name
+
+@list  (Attributs du JsonView)
 - id
 - name
 - Ajouter une méthode "modelCount" elle renvoie le nombre de Model pour la Brand
 
-Brand@show
+@show  (Attributs du JsonView)
 - id
 - name
 - models
@@ -123,13 +175,30 @@ Brand@show
     - name
 
 
-Address@delete
+### BrandController
 
-Address@create
 
-Address@update
+@delete
 
-Address@show
+Ce n'est pas une vraie suppression, on renomme simplements le label, on doit conserver l'objet !
+
+@create
+- streetNumber
+- streetName
+- zipCode
+- city
+- latitude
+- longitude
+
+@update
+- streetNumber
+- streetName
+- zipCode
+- city
+- latitude
+- longitude
+
+@show
 - id
 - streetNumber
 - streetName
@@ -139,34 +208,54 @@ Address@show
 - longitude
 
 
-Image@delete
-
-Image@create
+### ImageController
 
 
-Fuel@delete
+@delete
 
-Fuel@create
+@create
+- path
+- listing (id ?)
 
-Fuel@update
 
-Fuel@list
+### FuelController
+
+
+@delete
+
+Ce n'est pas une vraie suppression, on renomme simplements le label, on doit conserver l'objet !
+
+
+@create
+- logo
+- type
+
+@update
+- logo
+- type
+
+@list
 - id
 - name
 - logo
 
-Fuel@show
+@show
 - id
 - name
 - logo
 
 
-Favorite@delete
-
-Favorite@create
+### FavoriteController
 
 
-## Faire le(s) "Controller Advisor"
+@handFavorite
+
+FavoriteDTO :
+- listingId
+- userId
+
+
+## Faire le(s) "Controller Advisor" (BONUS !)
 
 
 - Un controller advice pour gérer la "AlreadyActiveException"
