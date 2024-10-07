@@ -55,14 +55,14 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createFuels();
-        createUsers();
-        createAddresses();
-        createBrands();
-        createModels();
-        createListings();
-        createImages();
-        createFavorites();
+//        createFuels();
+//        createUsers();
+//        createAddresses();
+//        createBrands();
+//        createModels();
+//        createListings();
+//        createImages();
+//        createFavorites();
     }
 
     private void createAddresses() {
