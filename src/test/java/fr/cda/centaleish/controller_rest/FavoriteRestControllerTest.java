@@ -1,7 +1,6 @@
 package fr.cda.centaleish.controller_rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,7 +22,7 @@ public class FavoriteRestControllerTest {
 
     @Test
     @WithMockUser(username = "toto@gmail.com")
-    public void testAccessBrandListFailed() throws Exception {
+    public void testAddFavoriteSuccess() throws Exception {
         ResultActions resultActions = mockMvc.perform(
                 post("/api/favorite")
                         .contentType(MediaType.APPLICATION_JSON)
