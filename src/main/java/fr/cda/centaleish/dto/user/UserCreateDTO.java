@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Data
 public class UserCreateDTO {
 
-    @Email
+    @Email(message = "Doit être un email valide.")
     private String email;
 
     @NotBlank

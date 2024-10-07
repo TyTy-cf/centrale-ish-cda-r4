@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,11 +37,25 @@ public class FavoriteRestControllerTest {
                 .andExpect(jsonPath("$.id").exists());
     }
 
+    @Test
+    public void testAddFavoriteFailed() throws Exception {
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/favorite")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(getJsonByData(
+                            "005e38fb-5403-47bc-9989-9a289fdb1185",
+                            "010bff98-50e5-4b6a-a3c1-8c167c0acc7b"
+                    )));
+
+        resultActions.andExpect(status().is4xxClientError())
+                .andExpect(status().isForbidden());
+    }
+
     private String getJsonByData(String listingId, String userId) {
-        return "{\n" +
-                "  \"listingId\": \""+listingId+"\",\n" +
-                "  \"userId\": \""+userId+"\"\n" +
-                "}";
+        JSONObject object = new JSONObject();
+        object.put("listingId", listingId);
+        object.put("userId", userId);
+        return object.toString();
     }
 
 }
