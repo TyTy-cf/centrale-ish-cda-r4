@@ -231,6 +231,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                         Instant.now().minusSeconds(999999999)));
                 favorite.setUser(user);
                 favorite.setListing(listing);
+//                favorite.setUserListingID(new UserListingId(user.getUuid(), listing.getUuid()));
                 favoriteRepository.save(favorite);
             }
         }
