@@ -9,6 +9,7 @@ import fr.cda.centaleish.exception.ExpiredCodeException;
 import fr.cda.centaleish.repository.AddressRepository;
 import fr.cda.centaleish.repository.UserRepository;
 import fr.cda.centaleish.service.interfaces.ServiceInterface;
+import fr.cda.centaleish.service.utils.FileUploaderService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +19,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -120,6 +123,20 @@ public class UserService implements
             user.getPassword(),
             user.getAuthorities()
         );
+    }
+
+    public Boolean uploadImage(MultipartFile file, Principal principal) {
+        if (principal != null) {
+            User user = findOneByEmail(principal.getName());
+            FileUploaderService fileUploaderService = new FileUploaderService("uploads/user");
+            String filename = fileUploaderService.save(file);
+            if (filename != null) {
+                user.setPhoto(filename);
+                userRepository.saveAndFlush(user);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

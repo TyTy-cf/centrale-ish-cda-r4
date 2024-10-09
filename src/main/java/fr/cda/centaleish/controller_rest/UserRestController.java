@@ -7,7 +7,12 @@ import fr.cda.centaleish.json_views.JsonViews;
 import fr.cda.centaleish.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/user")
@@ -37,6 +42,14 @@ public class UserRestController {
     @DeleteMapping("/{uuid}")
     public Boolean delete(@PathVariable String uuid) {
         return userService.delete(uuid);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Boolean> uploadPhoto(
+        @RequestParam("userPhoto") MultipartFile file,
+        Principal principal
+    ) {
+        return new ResponseEntity<>(userService.uploadImage(file, principal), HttpStatus.ACCEPTED);
     }
 
 }

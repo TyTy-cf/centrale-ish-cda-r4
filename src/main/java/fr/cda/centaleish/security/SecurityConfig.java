@@ -43,6 +43,7 @@ public class SecurityConfig {
                         AntPathRequestMatcher.antMatcher(HttpMethod.GET,"/api/user/activate/**")
                     ).permitAll()
                     .requestMatchers(
+                        AntPathRequestMatcher.antMatcher("/api/user/**"),
                         AntPathRequestMatcher.antMatcher("/api/listing/**"),
                         AntPathRequestMatcher.antMatcher(HttpMethod.POST,"/api/favorite/**")
                     ).authenticated()
