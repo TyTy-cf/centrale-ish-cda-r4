@@ -1,6 +1,7 @@
 package fr.cda.centaleish.service;
 
 import fr.cda.centaleish.dto.listing.ListingCreateDTO;
+import fr.cda.centaleish.dto.listing.ListingListDTO;
 import fr.cda.centaleish.dto.listing.ListingUpdateDTO;
 import fr.cda.centaleish.entity.*;
 import fr.cda.centaleish.repository.FuelRepository;
@@ -10,10 +11,15 @@ import fr.cda.centaleish.repository.ModelRepository;
 import fr.cda.centaleish.service.interfaces.ServiceListInterface;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -111,5 +117,25 @@ public class ListingService implements
     @Override
     public List<Listing> list() {
         return listingRepository.findAll();
+    }
+
+    public Page<ListingListDTO> list(Pageable pageable) {
+//        listingRepository.findAll(Sort.by("createdAt").descending());
+        Page<Listing> listings = listingRepository.findAll(pageable);
+        List<ListingListDTO> listDTOs = new ArrayList<>();
+        listings.forEach((item) -> {
+            listDTOs.add(new ListingListDTO(
+               item.getUuid(),
+               item.getTitle(),
+               item.getPriceDecimal(),
+               item.getMileage(),
+               item.getProducedAt(),
+               item.getAddress().getZipCode(),
+               item.getModel().getName(),
+               item.getModel().getBrand().getName(),
+               item.getFuel().getType()
+            ));
+        });
+        return new PageImpl<>(listDTOs, pageable, listings.getTotalElements());
     }
 }
