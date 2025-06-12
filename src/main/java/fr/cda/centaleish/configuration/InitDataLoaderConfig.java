@@ -55,14 +55,14 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        createFuels();
-//        createUsers();
-//        createAddresses();
-//        createBrands();
-//        createModels();
-//        createListings();
-//        createImages();
-//        createFavorites();
+        createFuels();
+        createUsers();
+        createAddresses();
+        createBrands();
+        createModels();
+        createListings();
+        createImages();
+        createFavorites();
     }
 
     private void createAddresses() {
@@ -187,8 +187,9 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             for (int i = 1; i <= 1000; i++) {
                 Random random = new Random();
                 Listing listing = new Listing();
-                listing.setCreatedAt(LocalDateTime.now());
-                Fuel fuel = fuelRepository.findById(random.nextLong(1L, 7L)).get();
+                listing.setCreatedAt(generateRandomDate(
+                        Instant.now().minusSeconds(99999999)));
+                Fuel fuel = fuelRepository.findById(random.nextLong(1L, 8L)).get();
                 listing.setFuel(fuel);
                 listing.setMileage(faker.number().numberBetween(5000L, 250000L));
                 listing.setPrice(faker.number().numberBetween(250000L, 7000000L));
